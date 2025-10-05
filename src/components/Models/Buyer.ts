@@ -1,17 +1,10 @@
-import { IBuyer, TPayment } from '../../../types';
+import { IBuyer, TPayment } from '../../types';
 
 export class Buyer {
   private payment: TPayment | null = null;
   private email: string = '';
   private phone: string = '';
   private address: string = '';
-
-  constructor() {
-    this.payment = null;
-    this.email = '';
-    this.phone = '';
-    this.address = '';
-  }
 
   setPayment(payment: TPayment): void {
     this.payment = payment;

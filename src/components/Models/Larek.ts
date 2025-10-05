@@ -3,7 +3,6 @@ import { IProduct, IBuyer } from '../../../types';
 
 export class Larek {
   private api: IApi;
-  static fetchProducts: any;
 
   constructor(api: IApi) {
     this.api = api;
