@@ -16,19 +16,19 @@ export class FormOrderView extends BaseForm {
     this.cashPayButton = ensureElement<HTMLButtonElement>('[name="cash"]', container)
     this.address = ensureElement<HTMLInputElement>('[name="address"]', container)
 
-    this.cardPayButton.addEventListener('click', () => {
+    this.cardPayButton.addEventListener('sumbit', () => {
       this.events.emit('payment:changed', {payment: 'card'})
     })
 
-    this.cashPayButton.addEventListener('click', () => {
+    this.cashPayButton.addEventListener('sumbit', () => {
       this.events.emit('payment:changed', {payment: 'cash'})
     })
 
-    this.address.addEventListener('input', () => {
+    this.address.addEventListener('sumbit', () => {
       this.events.emit('address:changed', {address: this.address.value})
     })
 
-    this.submitButton.addEventListener('click', (e) => {
+    this.submitButton.addEventListener('sumbit', (e) => {
       e.preventDefault();
       this.events.emit('form:order:submit')
     })
