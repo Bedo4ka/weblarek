@@ -134,7 +134,8 @@ Presenter - презентер содержит основную логику п
 ### Buyer
 Хранит и валидирует данные покупателя. Генерирует события при изменении полей.
 
-**class Buyer {
+```javascript
+class Buyer {
   private payment: TPayment | null;
   private email: string;
   private phone: string;
@@ -147,7 +148,8 @@ Presenter - презентер содержит основную логику п
   getData(): IBuyer;
   validate(): Partial<Record<keyof IBuyer, string>>;
   clear(): void;
-}**
+}
+```
 
 ### Server
 Слой взаимодействия с сервером через Api.
@@ -166,11 +168,13 @@ class Server {
 ### BaseCard
 Базовый класс карточки товара. Используется наследниками для разных контекстов.
 
+```javascript
 class BaseCard {
   render(data: IProduct): HTMLElement;
   setText(element: HTMLElement, text: string): void;
   setImage(element: HTMLImageElement, src: string, alt?: string): void;
 }
+```
 
 ### CardForCatalog
 Карточка в каталоге. Генерирует событие product:select при клике.
@@ -184,20 +188,24 @@ class BaseCard {
 ### Modal
 Модальное окно для отображения карточек, корзины и форм.
 
-**class Modal {
+```javascript
+class Modal {
   open(content: HTMLElement): void;
   close(): void;
   setContent(content: HTMLElement): void;
-}**
+}
+```
 Событие: modal:close.
 
 ### Gallery
 Выводит карточки товаров на главной странице.
 
-**class Gallery {
+```javascript
+class Gallery {
   set galleryList(cards: HTMLElement[]): void;
   clear(): void;
-}**
+}
+```
 
 ### BasketView
 Отображает содержимое корзины и итоговую сумму.
@@ -230,8 +238,8 @@ Success
 
 
 ### Событие	Описание
-$$
-products:change	Загрузка списка товаров
+
+~~products:change	Загрузка списка товаров
 product:select	Выбор товара из каталога
 product:selected:set	Открытие карточки предпросмотра
 product:submit	Добавление / удаление товара из корзины
@@ -243,8 +251,8 @@ address:changed	Изменение адреса
 form:order:submit	Отправка формы оплаты
 form:contacts:submit	Отправка контактной формы
 modal:close	Закрытие модального окна
-success:click	Завершение оформления заказа
-$$
+success:click	Завершение оформления заказа~~
+
 
 ### Презентер
 Слой презентера описан в основном коде приложения
