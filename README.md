@@ -239,19 +239,19 @@ Success
 
 ### Событие	Описание
 
-~~products:change	Загрузка списка товаров
-product:select	Выбор товара из каталога
-product:selected:set	Открытие карточки предпросмотра
-product:submit	Добавление / удаление товара из корзины
-basket:open	Открытие корзины
-basket:listChange	Обновление содержимого корзины
-basket:placeOrder	Переход к оформлению заказа
-payment:changed	Изменение способа оплаты
-address:changed	Изменение адреса
-form:order:submit	Отправка формы оплаты
-form:contacts:submit	Отправка контактной формы
-modal:close	Закрытие модального окна
-success:click	Завершение оформления заказа~~
+|products:change	|Загрузка списка товаров
+|product:select	|Выбор товара из каталога
+|product:selected:set	|Открытие карточки предпросмотра
+|product:submit	|Добавление / удаление товара из корзины
+|basket:open	|Открытие корзины
+|basket:listChange	|Обновление содержимого корзины
+|basket:placeOrder	|Переход к оформлению заказа
+|payment:changed	|Изменение способа оплаты
+|address:changed	|Изменение адреса
+|form:order:submit	|Отправка формы оплаты
+|form:contacts:submit	|Отправка контактной формы
+|modal:close	|Закрытие модального окна
+|success:click	|Завершение оформления заказа
 
 
 ### Презентер
