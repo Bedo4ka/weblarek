@@ -99,60 +99,141 @@ Presenter - презентер содержит основную логику п
 `trigger<T extends object>(event: string, context?: Partial<T>): (data: T) => void` - возвращает функцию, при вызове которой инициализируется требуемое в параметрах событие с передачей в него данных из второго параметра.
 
 ### Данные
-Интерфейс продукта
-interface IProduct { id: string; description: string; image: string; title: string; category: string; price: number | null; }
 
-### Класс Products
-Класс отвечает за хранение массива всех товаров приложения и за управление выбранным товаром для подробного отображения. Он предоставляет методы для доступа к данным товаров и управления ими.
+### Классы моделей
+Products
+Модель для хранения и управления списком товаров.
 
-Конструктор:
-constructor(products: IProduct[] = []) products: IProduct[] — начальный массив товаров.
+class Products {
+  private products: IProduct[] = [];
+  private selectedProduct: IProduct | null = null;
 
-Поля класса:
-private products: IProduct[] — массив всех товаров, доступных в магазине.
+  setProducts(products: IProduct[]): void;
+  getProducts(): IProduct[];
+  getProductById(id: string): IProduct | undefined;
+  setSelectedProduct(product: IProduct): void;
+  clearSelectedProduct(): void;
+}
+Basket
+Модель корзины пользователя. Управляет добавлением, удалением и подсчётом товаров.
 
-Методы:
-setProducts(products: IProduct[]): void — сохраняет массив товаров в модели. getProducts(): IProduct[] — возвращает массив всех товаров. getProductById(id: string): IProduct | undefined — возвращает товар по его id.
+class Basket {
+  private items: IProduct[] = [];
 
-Интерфейс элемента корзины с продуктами
-interface CartItem { product: Product; - Товар, добавленный в корзину quantity: number; - Количество товара }
+  getItems(): IProduct[];
+  addItem(product: IProduct): void;
+  removeItem(productId: string): void;
+  clear(): void;
+  getTotalPrice(): number;
+  getItemCount(): number;
+  hasItem(productId: string): boolean;
+}
+Buyer
+Хранит и валидирует данные покупателя. Генерирует события при изменении полей.
 
-### Класс Cart
-Класс отвечает за хранение товаров, которые пользователь добавил в корзину, и за управление ими: добавление, удаление, подсчет стоимости и количества товаров.
+class Buyer {
+  private payment: TPayment | null;
+  private email: string;
+  private phone: string;
+  private address: string;
 
-Конструктор:
-constructor() Не принимает параметров. Инициализирует пустой массив корзины.
+  setPayment(payment: TPayment): void;
+  setEmail(email: string): void;
+  setPhone(phone: string): void;
+  setAddress(address: string): void;
+  getData(): IBuyer;
+  validate(): Partial<Record<keyof IBuyer, string>>;
+  clear(): void;
+}
+Server
+Слой взаимодействия с сервером через Api.
 
-Поля класса:
-private items: IProduct[] — массив товаров, выбранных пользователем для покупки.
+class ServerService {
+  constructor(private api: IApi) {}
 
-Методы:
-getItems(): IProduct[] — возвращает массив товаров в корзине. addItem(product: IProduct): void — добавляет товар в корзину. removeItem(productId: string): void — удаляет товар из корзины по id. clear(): void — очищает корзину полностью. getTotalPrice(): number — возвращает сумму цен всех товаров в корзине. getItemCount(): number — возвращает количество товаров в корзине. hasItem(productId: string): boolean — проверяет наличие товара в корзине по id.
+  fetchProducts(): Promise<IProduct[]>;
+  sendOrder(order: TOrder): Promise<{ total: number }>;
+}
 
-Интерфейс покупателя
-interface IBuyer { payment: TPayment; email: string; phone: string; address: string; }
+### Представления (Views)
+BaseCard
+Базовый класс карточки товара. Используется наследниками для разных контекстов.
 
-### Класс Buyer
-Класс хранит данные покупателя, введённые при оформлении заказа, и обеспечивает их валидацию и сохранение.
+class BaseCard {
+  render(data: IProduct): HTMLElement;
+  setText(element: HTMLElement, text: string): void;
+  setImage(element: HTMLImageElement, src: string, alt?: string): void;
+}
+CardForCatalog
+Карточка в каталоге. Генерирует событие product:select при клике.
 
-Конструктор:
-constructor() Не принимает параметров. Инициализирует поля пустыми значениями.
+CardForPreview
+Карточка в модальном окне предпросмотра. Добавляет описание и кнопку «В корзину» (product:submit).
 
-Поля класса:
-private payment: TPayment | null — вид оплаты ('card' | 'cash'). private email: string — почта покупателя. private phone: string — телефон покупателя. private address: string — адрес доставки.
+CardForBasket
+Карточка в корзине. Отображает порядковый номер и кнопку удаления (product:delete).
 
-Методы:
-setPayment(payment: TPayment): void — сохраняет вид оплаты. setEmail(email: string): void — сохраняет email покупателя. setPhone(phone: string): void — сохраняет телефон покупателя. setAddress(address: string): void — сохраняет адрес доставки. getData(): IBuyer — возвращает объект со всеми данными покупателя. clear(): void — очищает все данные покупателя. validate(): Partial<Record<keyof IBuyer, string>> — проверяет корректность данных. Возвращает объект с ошибками по каждому полю, если оно пустое: { payment: 'Не выбран вид оплаты', email: 'Укажите email', }
+Modal
+Модальное окно для отображения карточек, корзины и форм.
 
-### Слой коммуникации
-Класс Larek
-Взаимодействие с сервером, использует композицию: получает объект класса Api в конструкторе и использует его методы get и post для работы с сервером.
+class Modal {
+  open(content: HTMLElement): void;
+  close(): void;
+  setContent(content: HTMLElement): void;
+}
+Событие: modal:close.
 
-Конструктор
-constructor(api: IApi) api: IApi — объект для выполнения HTTP-запросов.
+Gallery
+Выводит карточки товаров на главной странице.
 
-класс API
-private api: IApi — объект API используемый для запросов.
+class Gallery {
+  set galleryList(cards: HTMLElement[]): void;
+  clear(): void;
+}
+BasketView
+Отображает содержимое корзины и итоговую сумму.
 
-Методы:
-fetchProducts(): Promise<IProduct[]> — выполняет GET-запрос на и возвращает массив товаров. sendOrder(order: IBuyer & { items: IProduct[] }): Promise<void> — выполняет POST-запрос с данными о заказе.
+### События:
+
+basket:open — открыть корзину
+basket:listChange — обновление списка
+basket:placeOrder — переход к оформлению заказа
+FormOrderView
+Первый шаг оформления заказа — выбор способа оплаты и адреса.
+
+CSS-модификатор: .button_alt-active — активная кнопка выбора оплаты.
+
+События:
+
+payment:changed
+address:changed
+form:order:submit
+FormContactsView
+Второй шаг — ввод контактных данных.
+
+События:
+
+form:email:changed
+form:phone:changed
+form:contacts:submit
+Success
+Отображает сообщение об успешной покупке и сумму заказа. Событие success:click возвращает пользователя в каталог.
+
+
+Событие	Описание
+products:change	Загрузка списка товаров
+product:select	Выбор товара из каталога
+product:selected:set	Открытие карточки предпросмотра
+product:submit	Добавление / удаление товара из корзины
+basket:open	Открытие корзины
+basket:listChange	Обновление содержимого корзины
+basket:placeOrder	Переход к оформлению заказа
+payment:changed	Изменение способа оплаты
+address:changed	Изменение адреса
+form:order:submit	Отправка формы оплаты
+form:contacts:submit	Отправка контактной формы
+modal:close	Закрытие модального окна
+success:click	Завершение оформления заказа
+
+### Презентер
+Слой презентера описан в основном коде приложения
