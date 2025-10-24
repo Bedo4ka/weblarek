@@ -101,10 +101,11 @@ Presenter - презентер содержит основную логику п
 ### Данные
 
 ### Классы моделей
-Products
+
+### Products
 Модель для хранения и управления списком товаров.
 
-class Products {
+**class Products {
   private products: IProduct[] = [];
   private selectedProduct: IProduct | null = null;
 
@@ -113,11 +114,12 @@ class Products {
   getProductById(id: string): IProduct | undefined;
   setSelectedProduct(product: IProduct): void;
   clearSelectedProduct(): void;
-}
-Basket
+}**
+
+### Basket
 Модель корзины пользователя. Управляет добавлением, удалением и подсчётом товаров.
 
-class Basket {
+**class Basket {
   private items: IProduct[] = [];
 
   getItems(): IProduct[];
@@ -127,11 +129,12 @@ class Basket {
   getTotalPrice(): number;
   getItemCount(): number;
   hasItem(productId: string): boolean;
-}
-Buyer
+}**
+
+### Buyer
 Хранит и валидирует данные покупателя. Генерирует события при изменении полей.
 
-class Buyer {
+**class Buyer {
   private payment: TPayment | null;
   private email: string;
   private phone: string;
@@ -144,19 +147,23 @@ class Buyer {
   getData(): IBuyer;
   validate(): Partial<Record<keyof IBuyer, string>>;
   clear(): void;
-}
-Server
+}**
+
+### Server
 Слой взаимодействия с сервером через Api.
 
-class ServerService {
+```console
+class Server {
   constructor(private api: IApi) {}
 
   fetchProducts(): Promise<IProduct[]>;
   sendOrder(order: TOrder): Promise<{ total: number }>;
 }
 
+```
 ### Представления (Views)
-BaseCard
+
+### BaseCard
 Базовый класс карточки товара. Используется наследниками для разных контекстов.
 
 class BaseCard {
@@ -164,33 +171,35 @@ class BaseCard {
   setText(element: HTMLElement, text: string): void;
   setImage(element: HTMLImageElement, src: string, alt?: string): void;
 }
-CardForCatalog
+
+### CardForCatalog
 Карточка в каталоге. Генерирует событие product:select при клике.
 
-CardForPreview
+### CardForPreview
 Карточка в модальном окне предпросмотра. Добавляет описание и кнопку «В корзину» (product:submit).
 
-CardForBasket
+### CardForBasket
 Карточка в корзине. Отображает порядковый номер и кнопку удаления (product:delete).
 
-Modal
+### Modal
 Модальное окно для отображения карточек, корзины и форм.
 
-class Modal {
+**class Modal {
   open(content: HTMLElement): void;
   close(): void;
   setContent(content: HTMLElement): void;
-}
+}**
 Событие: modal:close.
 
-Gallery
+### Gallery
 Выводит карточки товаров на главной странице.
 
-class Gallery {
+**class Gallery {
   set galleryList(cards: HTMLElement[]): void;
   clear(): void;
-}
-BasketView
+}**
+
+### BasketView
 Отображает содержимое корзины и итоговую сумму.
 
 ### События:
@@ -203,7 +212,7 @@ FormOrderView
 
 CSS-модификатор: .button_alt-active — активная кнопка выбора оплаты.
 
-События:
+### События:
 
 payment:changed
 address:changed
@@ -211,7 +220,7 @@ form:order:submit
 FormContactsView
 Второй шаг — ввод контактных данных.
 
-События:
+### События:
 
 form:email:changed
 form:phone:changed
@@ -220,7 +229,8 @@ Success
 Отображает сообщение об успешной покупке и сумму заказа. Событие success:click возвращает пользователя в каталог.
 
 
-Событие	Описание
+### Событие	Описание
+$$
 products:change	Загрузка списка товаров
 product:select	Выбор товара из каталога
 product:selected:set	Открытие карточки предпросмотра
@@ -234,6 +244,7 @@ form:order:submit	Отправка формы оплаты
 form:contacts:submit	Отправка контактной формы
 modal:close	Закрытие модального окна
 success:click	Завершение оформления заказа
+$$
 
 ### Презентер
 Слой презентера описан в основном коде приложения

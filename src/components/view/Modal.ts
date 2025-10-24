@@ -3,7 +3,7 @@ import { IEvents } from "../base/Events";
 import { ensureElement } from "../../utils/utils";
 import { IModalData } from "../../types";
 
-export class Modal  extends Component<IModalData> {
+export class Modal extends Component<IModalData> {
   private closeBtn: HTMLElement;
   private contentContainer: HTMLElement;
   private events: IEvents;
@@ -20,12 +20,10 @@ export class Modal  extends Component<IModalData> {
     this.closeBtn = ensureElement<HTMLButtonElement>('.modal__close', container);
     this.contentContainer = ensureElement<HTMLElement>('.modal__content', container);
 
-    this.closeBtn.addEventListener('click', () => 
-      this.events.emit('modal:close'));
-
+    this.closeBtn.addEventListener('click', () => this.close());
     this.container.addEventListener('click', (e) => {
       if (e.target === e.currentTarget) {
-        this.events.emit('modal:close');
+        this.close();
       }
     });
   }
@@ -43,5 +41,6 @@ export class Modal  extends Component<IModalData> {
   close(): void {
     this.container.classList.remove('modal_active');
     document.removeEventListener('keydown', this._handleEscape);
-    }
+    this.events.emit('modal:close');
+  }
 }
