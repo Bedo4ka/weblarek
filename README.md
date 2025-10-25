@@ -105,7 +105,8 @@ Presenter - презентер содержит основную логику п
 ### Products
 Модель для хранения и управления списком товаров.
 
-**class Products {
+```javascript
+class Products {
   private products: IProduct[] = [];
   private selectedProduct: IProduct | null = null;
 
@@ -114,12 +115,14 @@ Presenter - презентер содержит основную логику п
   getProductById(id: string): IProduct | undefined;
   setSelectedProduct(product: IProduct): void;
   clearSelectedProduct(): void;
-}**
+}
+```
 
 ### Basket
 Модель корзины пользователя. Управляет добавлением, удалением и подсчётом товаров.
 
-**class Basket {
+```javascript 
+class Basket {
   private items: IProduct[] = [];
 
   getItems(): IProduct[];
@@ -129,7 +132,8 @@ Presenter - презентер содержит основную логику п
   getTotalPrice(): number;
   getItemCount(): number;
   hasItem(productId: string): boolean;
-}**
+} 
+```
 
 ### Buyer
 Хранит и валидирует данные покупателя. Генерирует события при изменении полей.
@@ -154,14 +158,13 @@ class Buyer {
 ### Server
 Слой взаимодействия с сервером через Api.
 
-```console
+```javascript
 class Server {
   constructor(private api: IApi) {}
 
   fetchProducts(): Promise<IProduct[]>;
   sendOrder(order: TOrder): Promise<{ total: number }>;
 }
-
 ```
 ### Представления (Views)
 
@@ -212,35 +215,38 @@ class Gallery {
 
 ### События:
 
-basket:open — открыть корзину
-basket:listChange — обновление списка
-basket:placeOrder — переход к оформлению заказа
-FormOrderView
+`basket:open` — открыть корзину
+`basket:listChange` — обновление списка
+`basket:placeOrder` — переход к оформлению заказа
+
+### FormOrderView
 Первый шаг оформления заказа — выбор способа оплаты и адреса.
 
 CSS-модификатор: .button_alt-active — активная кнопка выбора оплаты.
 
 ### События:
 
-payment:changed
+``payment:changed
 address:changed
-form:order:submit
-FormContactsView
+form:order:submit``
+
+### FormContactsView
 Второй шаг — ввод контактных данных.
 
 ### События:
 
-form:email:changed
+``form:email:changed
 form:phone:changed
-form:contacts:submit
-Success
+form:contacts:submit``
+
+### Success
 Отображает сообщение об успешной покупке и сумму заказа. Событие success:click возвращает пользователя в каталог.
 
 
 ### Событие	Описание
 
 |products:change	|Загрузка списка товаров|
-
+| ----------- | ----------- |
 |product:select	|Выбор товара из каталога|
 
 |product:selected:set	|Открытие карточки предпросмотра|
