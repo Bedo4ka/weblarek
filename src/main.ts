@@ -19,23 +19,32 @@ import { CardForCatalog } from './components/view/CardForCatalog';
 import { CardForPreview } from './components/view/CardForPreview';
 import { CardForBasket } from './components/view/CardForBasket';
 
+enum Templates {
+  CARD_CATALOG = '#card-catalog',
+  CARD_PREVIEW = '#card-preview',
+  CARD_BASKET = '#card-basket',
+  FORM_ORDER = '#order',
+  FORM_CONTACTS = '#contacts',
+  SUCCESS = '#success',
+  BASKET = '#basket',
+}
 
 export const events = new EventEmitter();
 
 const baseApi = new Api(API_URL);
 const serverService = new Server(baseApi);
 
-const cardForCatalogTemplate = ensureElement<HTMLTemplateElement>("#card-catalog");
-const cardForPreviewTemplate = ensureElement<HTMLTemplateElement>("#card-preview");
-const cardForBasketTemplate = ensureElement<HTMLTemplateElement>("#card-basket");
-const formOrderTemplate = ensureElement<HTMLTemplateElement>("#order");
-const formContactsTemplate = ensureElement<HTMLTemplateElement>("#contacts");
-const successTemplate = ensureElement<HTMLTemplateElement>("#success");
-const basketTemplate = ensureElement<HTMLTemplateElement>("#basket");
+const cardForCatalogTemplate = ensureElement<HTMLTemplateElement>(Templates.CARD_CATALOG);
+const cardForPreviewTemplate = ensureElement<HTMLTemplateElement>(Templates.CARD_PREVIEW);
+const cardForBasketTemplate = ensureElement<HTMLTemplateElement>(Templates.CARD_BASKET);
+const formOrderTemplate = ensureElement<HTMLTemplateElement>(Templates.FORM_ORDER);
+const formContactsTemplate = ensureElement<HTMLTemplateElement>(Templates.FORM_CONTACTS);
+const successTemplate = ensureElement<HTMLTemplateElement>(Templates.SUCCESS);
+const basketTemplate = ensureElement<HTMLTemplateElement>(Templates.BASKET);
 
-const galleryElement = ensureElement<HTMLElement>(".gallery");
-const headerElement = ensureElement<HTMLElement>(".header");
-const modalElement = ensureElement<HTMLElement>(".modal")
+const galleryElement = ensureElement<HTMLElement>('.gallery');
+const headerElement = ensureElement<HTMLElement>('.header');
+const modalElement = ensureElement<HTMLElement>('.modal');
 
 const productsModel = new Products();
 const basketModel = new Basket(events);
