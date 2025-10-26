@@ -6,7 +6,6 @@ import { IModalData } from "../../types";
 export class Modal extends Component<IModalData> {
   private closeBtn: HTMLElement;
   private contentContainer: HTMLElement;
-  private events: IEvents;
 
   private _handleEscape = (evt: KeyboardEvent) => {
     if (evt.key === "Escape") {
@@ -14,9 +13,8 @@ export class Modal extends Component<IModalData> {
     }
   };
 
-  constructor(container: HTMLElement, events: IEvents) {
+  constructor(container: HTMLElement, _events: IEvents) {
     super(container);
-    this.events = events;
     this.closeBtn = ensureElement<HTMLButtonElement>('.modal__close', container);
     this.contentContainer = ensureElement<HTMLElement>('.modal__content', container);
 
@@ -41,6 +39,5 @@ export class Modal extends Component<IModalData> {
   close(): void {
     this.container.classList.remove('modal_active');
     document.removeEventListener('keydown', this._handleEscape);
-    this.events.emit('modal:close');
   }
 }

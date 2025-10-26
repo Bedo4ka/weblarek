@@ -17,26 +17,28 @@ export class BasketView extends Component<IBasketViewData> {
     this.listContainer = ensureElement<HTMLUListElement>('.basket__list', container);
     this.totalPriceElement = ensureElement<HTMLElement>('.basket__price', container);
     this.submitButton = ensureElement<HTMLButtonElement>('.basket__button', container);
-    try {
-      this.emptyMessage = ensureElement<HTMLElement>('.basket__empty', container);
-    } catch (error) {
-      const emptyMessageElement = document.createElement('div');
-      emptyMessageElement.className = 'basket__empty';
-      container.appendChild(emptyMessageElement);
-      this.emptyMessage = emptyMessageElement;
-    }
+
+    this.emptyMessage = this.createEmptyMessageElement();
+    container.insertBefore(this.emptyMessage, container.childNodes[2]);
 
     this.submitButton.addEventListener('click', () => {
       this.events.emit('basket:placeOrder');
     });
   }
 
+  private createEmptyMessageElement(): HTMLElement {
+    const emptyMessageElement = document.createElement('p');
+    emptyMessageElement.className = 'basket__empty';
+    emptyMessageElement.textContent = 'Корзина пуста';
+    return emptyMessageElement;
+  }
+
   set basketList(cards: HTMLElement[]) {
-    this.listContainer.replaceChildren(...cards)
+    this.listContainer.replaceChildren(...cards);
   }
 
   set totalPrice(value: number) {
-  this.totalPriceElement.textContent = `${value} синапсов`;
+    this.totalPriceElement.textContent = `${value} синапсов`;
   }
 
   setEmptyMessage(hasItems: boolean) {
@@ -50,5 +52,4 @@ export class BasketView extends Component<IBasketViewData> {
   toggleSubmitButton(enabled: boolean) {
     this.submitButton.disabled = !enabled;
   }
-
 }
