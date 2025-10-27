@@ -13,11 +13,11 @@ import { Modal } from './components/view/Modal';
 import { Header } from './components/view/Header';
 import { BasketView } from './components/view/BasketView';
 import { Success } from './components/view/Success';
-import { FormOrderView } from './components/view/Form/FormOrderView';
-import { FormContactsView } from './components/view/Form/FormContactsView';
-import { CardForCatalog } from './components/view/CardForCatalog';
-import { CardForPreview } from './components/view/CardForPreview';
-import { CardForBasket } from './components/view/CardForBasket';
+import { FormOrderView } from './components/view/Forms/FormOrderView';
+import { FormContactsView } from './components/view/Forms/FormContactsView';
+import { CardForCatalog } from './components/view/Cards/CardForCatalog';
+import { CardForPreview } from './components/view/Cards/CardForPreview';
+import { CardForBasket } from './components/view/Cards/CardForBasket';
 
 enum Templates {
   CARD_CATALOG = '#card-catalog',

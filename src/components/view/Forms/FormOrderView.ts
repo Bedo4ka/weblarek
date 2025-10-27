@@ -28,10 +28,10 @@ export class FormOrderView extends BaseForm {
       this.events.emit('address:changed', {address: this.address.value})
     })
 
-    this.submitButton.addEventListener('click', (e) => {
+    this.container.addEventListener('submit', (e) => {
       e.preventDefault();
       this.events.emit('form:order:submit')
-    })
+    });
   }
 
   checkIsFormValid(errors: IValidationErrors): boolean {

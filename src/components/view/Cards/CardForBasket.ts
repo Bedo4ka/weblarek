@@ -1,6 +1,6 @@
-import { ensureElement } from "../../utils/utils";
+import { ensureElement } from "../../../utils/utils";
 import { BaseCard } from "./BaseCard";
-import { IEvents } from "../base/Events";
+import { IEvents } from "../../base/Events";
 
 export class CardForBasket extends BaseCard {
   private deleteBtn: HTMLButtonElement;

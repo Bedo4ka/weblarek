@@ -1,7 +1,7 @@
-import { IEvents } from "../base/Events";
-import { ensureElement } from "../../utils/utils";
-import { Component } from "../base/Component";
-import { IProduct } from "../../types";
+import { IEvents } from "../../base/Events";
+import { ensureElement } from "../../../utils/utils";
+import { Component } from "../../base/Component";
+import { IProduct } from "../../../types";
 
 export abstract class BaseCard extends Component<IProduct> {
   protected element: HTMLElement;

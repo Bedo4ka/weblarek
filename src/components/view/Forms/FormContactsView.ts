@@ -14,14 +14,13 @@ export class FormContactsView extends BaseForm {
     this.phoneInput = ensureElement<HTMLInputElement>('[name=phone]', container);
 
   
-    this.emailInput.addEventListener('click', () => {
+    this.emailInput.addEventListener('input', () => {
       this.events.emit('form:email:changed', { email: this.emailInput.value });
     });
 
-    this.phoneInput.addEventListener('click', () => {
+    this.phoneInput.addEventListener('input', () => {
       this.events.emit('form:phone:changed', { phone: this.phoneInput.value });
     });
-
 
     this.container.addEventListener('submit', (e) => {
       e.preventDefault();

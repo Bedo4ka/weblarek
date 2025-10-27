@@ -1,6 +1,6 @@
-import { IEvents } from "../base/Events";
-import { ensureElement } from "../../utils/utils";
-import { categoryMap, CDN_URL } from "../../utils/constants";
+import { IEvents } from "../../base/Events";
+import { ensureElement } from "../../../utils/utils";
+import { categoryMap, CDN_URL } from "../../../utils/constants";
 import { BaseCard } from "./BaseCard";
 
 export class CardForPreview extends BaseCard {

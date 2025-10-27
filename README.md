@@ -98,169 +98,216 @@ Presenter - презентер содержит основную логику п
 `emit<T extends object>(event: string, data?: T): void` - инициализация события. При вызове события в метод передается название события и объект с данными, который будет использован как аргумент для вызова обработчика.  
 `trigger<T extends object>(event: string, context?: Partial<T>): (data: T) => void` - возвращает функцию, при вызове которой инициализируется требуемое в параметрах событие с передачей в него данных из второго параметра.
 
-### Данные
+##### Классы моделей
 
-### Классы моделей
+##### Products
+Класс предназначен для хранения и управления списком товаров.
 
-### Products
-Модель для хранения и управления списком товаров.
+Поля класса:
 
-```javascript
-class Products {
-  private products: IProduct[] = [];
-  private selectedProduct: IProduct | null = null;
+`products: IProduct[] ` — массив товаров (приватное поле).
+`selectedProduct: IProduct | null `— выбранный товар (приватное поле, может быть null).
 
-  setProducts(products: IProduct[]): void;
-  getProducts(): IProduct[];
-  getProductById(id: string): IProduct | undefined;
-  setSelectedProduct(product: IProduct): void;
-  clearSelectedProduct(): void;
-}
-```
+Методы класса:
 
-### Basket
+`setProducts(products: IProduct[]): void` — устанавливает список товаров.
+`getProducts(): IProduct[]` — возвращает список всех товаров.
+`getProductById(id: string): IProduct | undefined `— возвращает товар по его идентификатору (id), если товар не найден — возвращает undefined.
+`setSelectedProduct(product: IProduct): void `— устанавливает выбранный товар.
+`clearSelectedProduct(): void `— сбрасывает выбранный товар (устанавливает selectedProduct в null).
+
+##### Basket
 Модель корзины пользователя. Управляет добавлением, удалением и подсчётом товаров.
 
-```javascript 
-class Basket {
-  private items: IProduct[] = [];
+Поля класса:
+`items: IProduct[]` — массив товаров в корзине (приватное поле, инициализируется пустым массивом).
 
-  getItems(): IProduct[];
-  addItem(product: IProduct): void;
-  removeItem(productId: string): void;
-  clear(): void;
-  getTotalPrice(): number;
-  getItemCount(): number;
-  hasItem(productId: string): boolean;
-} 
-```
+Методы класса:
+`getItems(): IProduct[]` - возвращает список всех товаров в корзине.
+`addItem(product: IProduct): void` - добавляет товар в корзину.
+`product: IProduct` — товар, который нужно добавить.
+`removeItem(productId: string): void` - удаляет товар из корзины по его идентификатору.
+`productId: string` — идентификатор товара для удаления.
+`clear(): void `- очищает корзину (удаляет все товары).
+`getTotalPrice(): number` - рассчитывает и возвращает общую стоимость всех товаров в корзине.
+`getItemCount(): number`- возвращает количество товаров в корзине (число позиций, а не суммарное количество единиц).
+`hasItem(productId: string): boolean` - проверяет, есть ли товар с указанным идентификатором в корзине.
+`productId: string` — идентификатор товара.
 
-### Buyer
+
+##### Buyer
 Хранит и валидирует данные покупателя. Генерирует события при изменении полей.
 
-```javascript
-class Buyer {
-  private payment: TPayment | null;
-  private email: string;
-  private phone: string;
-  private address: string;
+Поля класса:
+`payment: TPayment | null` — данные способа оплаты (может быть null).
+`email: string `— электронная почта покупателя.
+`phone: string` — номер телефона покупателя.
+`address: string` — адрес доставки.
 
-  setPayment(payment: TPayment): void;
-  setEmail(email: string): void;
-  setPhone(phone: string): void;
-  setAddress(address: string): void;
-  getData(): IBuyer;
-  validate(): Partial<Record<keyof IBuyer, string>>;
-  clear(): void;
-}
-```
+Методы класса:
+`setPayment(payment: TPayment): void` устанавливает способ оплаты.
+`setEmail(email: string): void` - устанавливает электронную почту покупателя.
+`setPhone(phone: string): void` - устанавливает номер телефона покупателя.
+`setAddress(address: string): void` - устанавливает адрес доставки.
+`getData(): IBuyer` - возвращает текущие данные покупателя в виде объекта.
+`validate(): Partial<Record<keyof IBuyer, string>>` - выполняет валидацию данных покупателя.
+`clear(): void` - сбрасывает все данные покупателя (устанавливает поля в начальное/пустое состояние).
 
-### Server
-Слой взаимодействия с сервером через Api.
 
-```javascript
-class Server {
-  constructor(private api: IApi) {}
+##### Server
+Слой взаимодействия с сервером через API.
 
-  fetchProducts(): Promise<IProduct[]>;
-  sendOrder(order: TOrder): Promise<{ total: number }>;
-}
-```
-### Представления (Views)
+Конструктор:
+`constructor(private api: IApi)` — принимает объект API для взаимодействия с сервером.
 
-### BaseCard
+Поля класса:
+`api: IApi` — экземпляр API (приватное поле).
+`order: TOrder `— объект с данными заказа.
+
+Методы класса:
+`fetchProducts(): Promise<IProduct[]>` - загружает список товаров с сервера.
+`sendOrder(order: TOrder): Promise<{ total: number }>` - отправляет заказ на сервер.
+
+###### Представления (Views)
+
+###### BaseCard
 Базовый класс карточки товара. Используется наследниками для разных контекстов.
 
-```javascript
-class BaseCard {
-  render(data: IProduct): HTMLElement;
-  setText(element: HTMLElement, text: string): void;
-  setImage(element: HTMLImageElement, src: string, alt?: string): void;
-}
-```
+Методы класса:
+`render(data: IProduct): HTMLElement` - создаёт и возвращает HTML‑элемент карточки товара на основе переданных данных.
+`setText(element: HTMLElement, text: string): void` -  устанавливает текстовое содержимое для указанного HTML‑элемента.
+`setImage(element: HTMLImageElement, src: string, alt?: string): void` -  устанавливает атрибуты src и alt для HTML‑элемента <img>.
 
-### CardForCatalog
-Карточка в каталоге. Генерирует событие product:select при клике.
+###### CardForBasket
+Карточка товара в корзине. Отображает: порядковый номер позиции; кнопку удаления (генерирует событие `product:delete`).
+Особенности реализации: наследуется от BaseCard; расширяет `render()` для добавления: номера позиции (<span class="item-number">); кнопки удаления с обработчиком; при клике на кнопку инициирует событие `product:delete с productId.`
 
-### CardForPreview
-Карточка в модальном окне предпросмотра. Добавляет описание и кнопку «В корзину» (product:submit).
+###### CardForCatalog
+Карточка товара в каталоге. При клике генерирует событие `product:select`.
+Особенности реализации: наследуется от BaseCard; реализует обработчик клика, который: определяет выбранный товар по данным карточки; инициирует событие `product:select `с передачей данных товара.
 
-### CardForBasket
-Карточка в корзине. Отображает порядковый номер и кнопку удаления (product:delete).
+###### CardForPreview
+Карточка товара в модальном окне предпросмотра. Добавляет: подробное описание товара; кнопку «В корзину» (генерирует событие `product:submit`).
+Особенности реализации: наследуется от BaseCard; расширяет метод `render()` для добавления: блока с описанием (<div class="description">); кнопки «В корзину» с обработчиком события; при клике на кнопку инициирует событие `product:submit` с данными товара.
 
-### Modal
+###### Modal
 Модальное окно для отображения карточек, корзины и форм.
 
-```javascript
-class Modal {
-  open(content: HTMLElement): void;
-  close(): void;
-  setContent(content: HTMLElement): void;
-}
-```
-Событие: modal:close.
+Методы класса:
+`open(content: HTMLElement): void` - открывает модальное окно с указанным контентом.
+`close(): void` - закрывает модальное окно. генерирует событие `modal:close`.
+`setContent(content: HTMLElement): void` - обновляет содержимое модального окна без открытия/закрытия.
 
-### Gallery
+###### Gallery
 Выводит карточки товаров на главной странице.
 
-```javascript
-class Gallery {
-  set galleryList(cards: HTMLElement[]): void;
-  clear(): void;
-}
-```
+Методы класса:
+`set galleryList(cards: HTMLElement[]): void` - устанавливает список карточек товаров для отображения.
+`clear(): void`- очищает содержимое галереи (удаляет все карточки).
 
-### BasketView
+###### BasketView
 Отображает содержимое корзины и итоговую сумму.
 
-### События:
+`basket:open` — инициируется при открытии корзины;
+`basket:listChange` — генерируется при изменении списка товаров (добавление/удаление);
+`basket:placeOrder` — срабатывает при переходе к оформлению заказа.
 
-`basket:open` — открыть корзину
-`basket:listChange` — обновление списка
-`basket:placeOrder` — переход к оформлению заказа
+Основные функции: рендеринг списка товаров через `CardForBasket`; отображение итоговой суммы (вызов `getTotalPrice() из Basket`); обработка событий корзины через `EventEmitter`.
 
-### FormOrderView
+###### BaseForm
+Базовый класс для форм, обеспечивающий управление состоянием, валидацией и взаимодействием с DOM.
+
+Поля класса:
+`submitButton: HTMLButtonElement` — кнопка отправки формы (<button type="submit">).
+`error: HTMLElement` — контейнер для отображения сообщений об ошибках (селектор `.form__errors`).
+`container: HTMLElement` — корневой элемент формы.
+
+Методы
+`set errorText(text: string)` - устанавливает текст ошибки в контейнер .form__errors.
+`toggleSubmitButton(enabled: boolean): void` - включает/отключает кнопку отправки.
+`toggleErrors(value: boolean): void` - показывает/скрывает блок ошибок.
+`resetFormState(): void` - сбрасывает состояние формы к начальному.
+
+###### FormOrderView
 Первый шаг оформления заказа — выбор способа оплаты и адреса.
+Особенности: использует CSS‑модификатор `.button_alt-active` для выделения активной кнопки выбора способа оплаты;
 
-CSS-модификатор: .button_alt-active — активная кнопка выбора оплаты.
+`payment:changed `— при смене способа оплаты;
+`address:changed` — при изменении адреса;
+`form:order:submit` — при нажатии кнопки «Далее» (переход ко второму шагу).
 
-### События:
+###### FormContactsView
+Второй шаг оформления заказа — ввод контактных данных.
 
-``payment:changed
-address:changed
-form:order:submit``
+Поля формы: email; телефон.
+`form:email:changed` — при изменении email;
+`form:phone:changed` — при изменении телефона;
+`form:contacts:submit` — при отправке формы (переход к подтверждению заказа).
 
-### FormContactsView
-Второй шаг — ввод контактных данных.
+###### Header
+Компонент шапки интерфейса, отображающий кнопку корзины и счётчик товаров в ней. Обеспечивает взаимодействие с корзиной через систему событий.
 
-### События:
+Поля класса:
+`basketButton: HTMLElement` — элемент кнопки корзины (селектор .header__basket).
+`basketCounter: HTMLElement` — элемент счётчика товаров в корзине (селектор .header__basket-counter).
 
-``form:email:changed
-form:phone:changed
-form:contacts:submit``
+###### Success
+Отображает сообщение об успешной покупке и сумму заказа.
+Функции: показывает текст «Заказ успешно оформлен»; итоговую сумму; номер заказа (опционально), содержит кнопку для возврата в каталог.
+`success:click` — инициируется при клике на кнопку возврата. Переводит пользователя на главную страницу (каталог).
 
-### Success
-Отображает сообщение об успешной покупке и сумму заказа. Событие success:click возвращает пользователя в каталог.
+###### Таблица событий системы
 
+| Событие | Описание |
+|--------|--------|
+| `products:change` | Загрузка списка товаров |
+| `product:select` | Выбор товара из каталога |
+| `product:selected:set` | Открытие карточки предпросмотра |
+| `product:submit` | Добавление / удаление товара из корзины |
+| `basket:open` | Открытие корзины |
+| `basket:listChange` | Обновление содержимого корзины |
+| `basket:placeOrder` | Переход к оформлению заказа |
+| `payment:changed` | Изменение способа оплаты |
+| `address:changed` | Изменение адреса |
+| `form:order:submit` | Отправка формы оплаты |
+| `form:contacts:submit` | Отправка контактной формы |
+| `modal:close` | Закрытие модального окна |
+| `success:click` | Завершение оформления заказа |
 
-### Событие	Описание
+---
 
-|products:change	|Загрузка списка товаров|
-| ----------- | ----------- |
-|product:select	|Выбор товара из каталога|
-|product:selected:set	|Открытие карточки предпросмотра|
-|product:submit	|Добавление / удаление товара из корзины|
-|basket:open	|Открытие корзины|
-|basket:listChange	|Обновление содержимого корзины|
-|basket:placeOrder	|Переход к оформлению заказа|
-|payment:changed	|Изменение способа оплаты|
-|address:changed	|Изменение адреса|
-|form:order:submit	|Отправка формы оплаты|
-|form:contacts:submit	|Отправка контактной формы|
-|modal:close	|Закрытие модального окна|
-|success:click	|Завершение оформления заказа|
+###### Презентер (Presenter)
 
+Презентер — компонент, связывающий модель данных и представление (View). Отвечает за:
+- обработку событий от View;
+- взаимодействие с моделями данных;
+- обновление представлений при изменении данных.
 
+**Основные обязанности:**
+1. **Обработка пользовательских действий**  
+   - реагирует на события из View (`product:select`, `basket:open` и др.);
+   - передаёт данные в модели (например, добавляет товар в корзину через `Basket`).
 
-### Презентер
-Слой презентера описан в основном коде приложения
+2. **Синхронизация данных**  
+   - при изменении модели (например, после `products:change`) обновляет соответствующие View;
+   - обеспечивает согласованность состояния между компонентами.
+
+3. **Управление потоком данных**  
+   - координирует переходы между экранами (каталог → корзина → оформление заказа);
+   - обрабатывает последовательность шагов (например, `basket:placeOrder` → `FormOrderView`).
+
+4. **Валидация и бизнес‑логика**  
+   - проверяет данные перед отправкой на сервер (через `Buyer.validate()`);
+   - вызывает методы `Server` для взаимодействия с API.
+
+**Пример взаимодействия:**
+- При событии `product:select`:
+  1. Презентер получает ID товара.
+  2. Загружает данные товара из модели `Products`.
+  3. Инициирует событие `product:selected:set`, открывая `Modal` с `CardForPreview`.
+
+- При событии `basket:placeOrder`:
+  1. Презентер проверяет содержимое корзины (`Basket`).
+  2. Передаёт управление `FormOrderView` для выбора способа оплаты.
+  3. Подписывается на события `payment:changed`, `address:changed` для обновления данных.
+
