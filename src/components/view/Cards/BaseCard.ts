@@ -3,7 +3,7 @@ import { ensureElement } from "../../../utils/utils";
 import { Component } from "../../base/Component";
 import { IProduct } from "../../../types";
 
-export abstract class BaseCard extends Component<IProduct> {
+export class BaseCard extends Component<IProduct> {
   protected element: HTMLElement;
   protected events: IEvents;
   protected _id: string;
